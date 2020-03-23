@@ -9,7 +9,7 @@
 (defonce app-state (r/atom {:search-response []
                             :class-response nil}))
 
-(def host "http://retrace-neu.herokuapp.com/")
+(def host "https://retrace-neu.herokuapp.com/")
 
 (defn handler [response key-to-update]
   "Takes in an HTTP response and updates the given key with the state"
