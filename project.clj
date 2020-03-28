@@ -1,6 +1,6 @@
-(defproject courseload-frontend "0.1.0"
-  :description "FIXME: write description"
-  :url "http://example.com/FIXME"
+(defproject courseload-frontend "0.2.0"
+  :description "Frontend for courseload (AKA retrace)"
+  :url "https://github.com/ethan-leba/courseload-frontend"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
 

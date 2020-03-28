@@ -8,6 +8,13 @@ body {
   color: #333;
   line-height: 1.5em;
 }
+html, body {
+    height: 100%;
+}
+
+#app {
+ height: 100%;
+}
 
 h1, h2, h3 {
   color: #000;
@@ -34,10 +41,33 @@ a:hover {
 }
 .container{
     display:flex;
+    height: 100%;
 }
 .fixed{
     width: 40%;
 }
+.comments{
+    width: 70%;
+}
 .flex-item{
     flex-grow: 1;
+    width:50%;
+}
+
+.no-class {
+    height: 100%;
+    text-align: center;
+}
+
+.gray {
+    color: gray;
+}
+
+input[type=text] {
+  background-color: white;
+  width: 80%;
+  padding: 10px;
+  border: 2px solid #E0E0E0;
+  border-radius: 4px;
+  font-size: 1em;
 }
