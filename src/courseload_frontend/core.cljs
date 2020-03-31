@@ -13,7 +13,8 @@
 
 (defonce app-state (r/atom {:search-response []
                             :page :home
-                            :class-response nil}))
+                            :class-response nil
+                            :current-class nil}))
 
 (defn hook-browser-navigation! []
   (doto (Html5History.)

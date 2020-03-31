@@ -10,8 +10,8 @@
 (def host "https://retrace-neu.herokuapp.com/")
 ;(def host "http://localhost:3000/")
 
-(defn handler [response key-to-update]
-  "Takes in an HTTP response and updates the given key with the state"
+(defn handler "Takes in an HTTP response and updates the given key with the state"
+    [response key-to-update]
   (let [clj-map (js->clj (.parse js/JSON response) :keywordize-keys true)]
     (.log js/console (str response))
     (swap! app-state #(assoc % key-to-update (clj-map :data)))))
@@ -28,10 +28,20 @@
   (get-data! (str host "search/" (-> event .-target .-value)) :search-response))
 
 (defn clear-class-atom []
-  (swap! app-state #(assoc % :class-response nil)))
+  (swap! app-state assoc :class-response nil))
 
 (defn set-page [sym]
   (swap! app-state assoc :page sym))
 
+(defn needs-update [subject course-number]
+  (let [current-class (@app-state :current-class)]
+    (not (and (some? current-class)
+              (= current-class [subject course-number])))))
+
+(defn set-current-class! [subject course-number]
+  (swap! app-state assoc :current-class [subject course-number]))
+
 (defn update-class-atom [subject course-number]
-  (get-data! (str host "class/" subject "?number=" course-number) :class-response))
+  (when (needs-update subject course-number)
+    (get-data! (str host "class/" subject "?number=" course-number) :class-response)
+    (set-current-class! subject course-number)))
