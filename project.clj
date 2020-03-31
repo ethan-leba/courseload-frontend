@@ -8,7 +8,9 @@
                  [org.clojure/clojurescript "1.10.597"]
                  [reagent "0.9.0-rc3"]
                  ;; HTTP requests
-                 [cljs-ajax "0.8.0"]]
+                 [cljs-ajax "0.8.0"]
+                 ;; Routing
+                 [clj-commons/secretary "1.2.4"]]
   
 
   :plugins [[lein-cljsbuild "1.1.7"]

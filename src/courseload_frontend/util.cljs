@@ -9,3 +9,6 @@
   "Replaces <br/> with a newline."
   (s/replace text #"<br/>" " "))
 
+(defn is-mobile []
+  (< (. js/window -innerHeight) 600))
+
