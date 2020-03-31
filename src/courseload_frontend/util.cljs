@@ -10,5 +10,5 @@
   (s/replace text #"<br/>" " "))
 
 (defn is-mobile []
-  (< (. js/window -innerHeight) 600))
+  (< (. js/window -innerWidth) 700))
 

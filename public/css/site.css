@@ -34,6 +34,16 @@
     z-index: -1;
  }
 
+ .header-mobile {
+    background-color: #5F54F2;
+    height: 4.5em;
+    border-width: .35em;
+    border-bottom-style: solid;
+    border-color: #4E48BE;
+    color: white;
+    width: 100%;
+ }
+
  .header-text {
     color: white;
  }
@@ -47,6 +57,13 @@
     font-size: 90%;
     font-weight: bold;
     color: #F2EFEF;
+ }
+
+ .search-icon {
+    max-height: 2em;
+    position: absolute;
+    top: 1em;
+    left: .5em;
  }
 
  .mh-100 {
@@ -63,6 +80,12 @@
 
 @media (max-width: 991.98px) {
     .card-columns {
+      column-count: 1;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .search-col {
       column-count: 1;
     }
 }

@@ -4,7 +4,8 @@
    [ajax.core :refer [GET]]))
 
 (defonce app-state (r/atom {:search-response []
-                            :class-response nil}))
+                            :class-response nil
+                            :page :home}))
 
 (def host "https://retrace-neu.herokuapp.com/")
 ;(def host "http://localhost:3000/")
@@ -28,6 +29,9 @@
 
 (defn clear-class-atom []
   (swap! app-state #(assoc % :class-response nil)))
+
+(defn set-page [sym]
+  (swap! app-state assoc :page sym))
 
 (defn update-class-atom [subject course-number]
   (get-data! (str host "class/" subject "?number=" course-number) :class-response))

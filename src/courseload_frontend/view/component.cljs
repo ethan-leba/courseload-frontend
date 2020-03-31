@@ -11,7 +11,6 @@
    [:p.m-1 small]])
 
 (defn vertical-num [title & list-of-vectors]
-  "Miscellaneous info about a class"
   [:div.container.px-5
    [:h6.text-center title]
    (for [[big small] list-of-vectors]
@@ -45,23 +44,21 @@
             (map (fn [[title data]] [(util/round-float (data attr) 1) title])
                  data-sources)))))
 
-(defn class-bar [{:keys [course-number subject course-name]} click-action]
-  "A singular search result"
+(defn class-bar [{:keys [course-number subject course-name]}]
   ^{:key (str subject course-number)}
   [:div.my-2
    [:a.large-font {:href (str "#/class/" subject "/" course-number)} course-name]
    [:p.font-weight-bold.text-dark (str subject " " course-number)]])
 
 (defn comment-display [{:keys [instructor-name instructor-comments]}]
-  "A singular comment"
   (when (some? instructor-comments)
     ^{:key instructor-comments}
     [:div {:class ["my-2"]}
      [:p.my-0 (util/fix-comment-text instructor-comments)]
      [:p.my-0 "on " [:span.font-weight-bold instructor-name]]]))
 
-(defn misc-info-display [{:keys [course-name]} {:keys [responses declines]}]
-  "Miscellaneous info about a class"
+(defn misc-info-display "Miscellaneous info about a class"
+  [{:keys [responses declines]}]
   (horizontal-num
    "Responses"
    [responses "answered"]
@@ -74,9 +71,9 @@
          (reverse (sort-by :overall-rating-of-teaching teachers))]
      ^{:key instructor-name}
      [:div.row.border-10.my-2.py-2
-      [:div.col-md-auto
+      [:div.col-9
        [:h5.m-0.font-weight-normal instructor-name]]
-      [:div.col
+      [:div.col.my-auto
        [:h5.m-0.font-weight-normal.text-right
         (util/round-float overall-rating-of-teaching 1)]]])])
 
