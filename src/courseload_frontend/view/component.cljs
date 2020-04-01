@@ -44,10 +44,10 @@
             (map (fn [[title data]] [(util/round-float (data attr) 1) title])
                  data-sources)))))
 
-(defn class-bar [{:keys [course-number subject course-name]}]
+(defn class-bar [{:keys [course-number subject course-name]} link-fn]
   ^{:key (str subject course-number)}
   [:div.my-2
-   [:a.large-font {:href (str "#/class/" subject "/" course-number)} course-name]
+   [:a.large-font {:href link-fn} course-name]
    [:p.font-weight-bold.text-dark (str subject " " course-number)]])
 
 (defn comment-display [{:keys [instructor-name instructor-comments]}]
@@ -82,4 +82,3 @@
    "Hours of work per week"
    [(util/round-float class 1) "Class"]
    [(util/round-float dept 1) "Department"]))
-

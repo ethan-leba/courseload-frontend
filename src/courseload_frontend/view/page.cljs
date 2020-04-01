@@ -45,6 +45,29 @@
    [:h4.m-0 course-name]
    [:p.header-sub (str subject " " course-number)]])
 
+(defn term-select []
+  [:div.container.mt-2
+    [:div.dropdown.col.my-auto
+     [:button {:class "btn btn-outline-secondary dropdown-toggle" 
+               :type "button" 
+               :data-toggle "dropdown"
+               :id "dropdownMenuButton"
+               :aria-haspopup "true" 
+               :aria-expanded "false"} 
+      (data/current-term-name)]
+     [:div.dropdown-menu {:aria-labelledby "dropdownMenuButton"}
+      (for [[term-id term-name] data/terms]
+        [:a.dropdown-item {:on-click (fn [] 
+                                       (data/update-term-atom term-id)
+                                       (data/redirect-class))} term-name])]]])
+  
+(defn search-bar []
+  [:div
+    [:input.form-control 
+     {:type "text" :id "fname" :name "fname"
+      :placeholder "Search for a class by name or subject..."
+      :on-change data/update-search-atom}]])
+
 (defn search-column [app-state mobile?]
     [:div.text-center.shadow-sm.min-vh-100.bg-white
      {:class (if mobile? [] ["col" "search-col"])}
@@ -54,13 +77,24 @@
        [:h2.mt-3.mb-4.font-weight-bold "Retrace"])
      [:div
        {:class (if mobile? ["px-3"] [])}
-       [:input.form-control 
-        {:type "text" :id "fname" :name "fname"
-         :placeholder "Search for a class by name or subject..."
-         :on-change data/update-search-atom}]
-       (for [search-result (app-state :search-response)]
-         (let [{:keys [subject course-number]} search-result]
-           (cm/class-bar search-result)))]])
+       (search-bar)
+       (term-select)
+       (when-let [results (app-state :search-response)]
+         (when (= (results :status) "success")
+          (for [search-result (results :data)]
+            (let [{:keys [subject course-number]} search-result]
+              (cm/class-bar search-result (data/get-search-link subject course-number))))))]])
+
+(defn class-error-msg [data]
+    [:div.text-center.m-5
+      (if (= data "noterm")
+          [:div 
+           [:h3 "No data exists on this class for the current term."]
+           [:h4.text-muted "Try a different term?"]]
+          [:div
+            [:h3 "Class not found"]])
+     [:h6 "If you think this is an error leave an issue " 
+      [:a {:href "https://github.com/ethan-leba/courseload-frontend/issues"} "here"]]])
 
 (defn home-page [app-state]
   "The landing page of the app"
@@ -72,10 +106,13 @@
      [:div.col
        [:div.row.header-div
          (when-let [class-map (app-state :class-response)]
-           (header-text (class-map :misc-info)))]
+           (when (= (class-map :status) "success")
+             (header-text (get-in class-map [:data :misc-info]))))]
        [:div.row.mx-2
          (if-let [class-map (app-state :class-response)]
-           (class-data-display class-map)
+           (if (= (class-map :status) "success")
+             (class-data-display (class-map :data))
+             (class-error-msg (class-map :data)))
            (no-class-display))]]]]])
 
 (defn home-page-mobile [app-state]
@@ -89,7 +126,11 @@
 
 (defn class-page-mobile [app-state]
   (when-let [class-response (app-state :class-response)]
-    [:div
-      (header-mobile (class-response :misc-info))
-      [:div.p-2
-        (class-data-display class-response)]]))
+    (if (= (class-response :status) "success")
+      [:div
+        (header-mobile ((class-response :data) :misc-info))
+        [:div.p-2
+          (class-data-display (class-response :data))]]
+      [:div.text-center
+       (class-error-msg (class-response :data))
+       [:a {:href "#"} "Go back"]])))
