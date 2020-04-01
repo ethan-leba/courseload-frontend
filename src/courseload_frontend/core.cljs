@@ -11,11 +11,6 @@
    [courseload-frontend.util :as util]
    [courseload-frontend.view.page :as page]))
 
-(defonce app-state (r/atom {:search-response []
-                            :page :home
-                            :class-response nil
-                            :current-class nil}))
-
 (defn hook-browser-navigation! []
   (doto (Html5History.)
     (events/listen
@@ -28,7 +23,11 @@
   (secretary/set-config! :prefix "#")
 
   (defroute "/class/:subject/:number" [subject number]
-    (data/update-class-atom subject number)
+    (data/update-class-atom subject number nil)
+    (data/set-page :class))
+
+  (defroute "/class/:subject/:number/:term" [subject number term]
+    (data/update-class-atom subject number term)
     (data/set-page :class))
 
   (defroute "/" []
