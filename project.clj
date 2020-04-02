@@ -1,4 +1,4 @@
-(defproject courseload-frontend "0.2.0"
+(defproject courseload-frontend "0.3.0"
   :description "Frontend for courseload (AKA retrace)"
   :url "https://github.com/ethan-leba/courseload-frontend"
   :license {:name "Eclipse Public License"
