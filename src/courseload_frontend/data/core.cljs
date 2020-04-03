@@ -46,7 +46,8 @@
   (get-data! (str host "search/" (-> event .-target .-value)) :search-response))
 
 (defn clear-class-atom []
-  (swap! app-state assoc :class-response nil))
+  (swap! app-state assoc :class-response nil)
+  (swap! app-state assoc :current-class nil))
 
 (defn set-page [sym]
   (swap! app-state assoc :page sym))
